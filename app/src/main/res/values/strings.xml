@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Recipes</string>
+    <string name="detail_button">Pokaż przepis</string>
+    <string name="recipe_name">Nazwa przepisu</string>
+    <string name="recipe_recipe">Składniki i sposób przygotowania</string>
+</resources>
