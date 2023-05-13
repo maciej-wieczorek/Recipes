@@ -2,12 +2,11 @@ package com.example.recipes
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 
 class DetailActivity : AppCompatActivity() {
 
     companion object {
-        const val EXTRA_RECIPE_ID: String = "id";
+        const val EXTRA_RECIPE_ID: String = "id"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,9 +14,9 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         val frag: RecipeDetailFragment = supportFragmentManager
-            .findFragmentById(R.id.detail_frag) as RecipeDetailFragment;
+            .findFragmentById(R.id.detail_frag) as RecipeDetailFragment
 
-        val recipeId: Int = intent.extras?.getInt(EXTRA_RECIPE_ID) ?: 0;
-        frag.setRecipe(recipeId.toLong());
+        val recipeId: Int = intent.extras?.getInt(EXTRA_RECIPE_ID) ?: 0
+        frag.setRecipe(recipeId.toLong())
     }
 }
