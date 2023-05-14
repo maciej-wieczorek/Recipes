@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailActivity" >
+    tools:context=".DetailActivity">
+
+    <include
+        layout="@layout/toolbar_main"
+        android:id="@+id/toolbar" />
 
     <fragment
         android:id="@+id/detail_frag"
         android:name="com.example.recipes.RecipeDetailFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

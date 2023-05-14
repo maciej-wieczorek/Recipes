@@ -8,6 +8,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity(), RecipeListFragment.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,6 +18,13 @@ class MainActivity : AppCompatActivity(), RecipeListFragment.Listener {
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        val pagerAdapter = SectionsPagerAdapter(supportFragmentManager, this)
+        val pager: ViewPager = findViewById(R.id.pager)
+        pager.adapter = pagerAdapter
+
+        val tabLayout: TabLayout = findViewById(R.id.tabs)
+        tabLayout.setupWithViewPager(pager)
 
 //        val intent = Intent(this, TempActivity::class.java)
 //        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

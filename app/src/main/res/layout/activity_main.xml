@@ -6,13 +6,24 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <include
-        layout="@layout/toolbar_main"
-        android:id="@+id/toolbar" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
 
-    <fragment
-        android:id="@+id/list_frag"
-        android:name="com.example.recipes.RecipeListFragment"
+        <include
+            layout="@layout/toolbar_main"
+            android:id="@+id/toolbar" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

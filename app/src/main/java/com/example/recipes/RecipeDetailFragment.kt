@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.FragmentTransaction
 
-class RecipeDetailFragment : Fragment() {
+class RecipeDetailFragment : Fragment(), View.OnClickListener {
 
     private var recipeId: Long = 0
     private lateinit var rootView: View
@@ -34,6 +34,10 @@ class RecipeDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false)
+
+        val fab: View = rootView.findViewById(R.id.fab)
+        fab.setOnClickListener(this)
+
         return rootView
     }
 
@@ -53,5 +57,15 @@ class RecipeDetailFragment : Fragment() {
 
     fun setRecipe(id: Long) {
         recipeId = id
+    }
+
+    private fun onClickFAB() {
+        // TODO
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.fab -> onClickFAB()
+        }
     }
 }
