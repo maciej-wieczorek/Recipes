@@ -1,12 +1,14 @@
 package com.example.recipes
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+
 
 class RecipeDetailFragment : Fragment(), View.OnClickListener {
 
@@ -60,7 +62,11 @@ class RecipeDetailFragment : Fragment(), View.OnClickListener {
     }
 
     private fun onClickFAB() {
-        // TODO
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.type = "text/plain"
+        val shareBody = Recipe.recipes[recipeId.toInt()].getRecipe()
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
+        startActivity(Intent.createChooser(sharingIntent, "Share via"))
     }
 
     override fun onClick(v: View?) {
