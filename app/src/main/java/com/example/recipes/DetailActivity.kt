@@ -2,7 +2,9 @@ package com.example.recipes
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 
 class DetailActivity : AppCompatActivity() {
 
@@ -23,5 +25,9 @@ class DetailActivity : AppCompatActivity() {
 
         val recipeId: Int = intent.extras?.getInt(EXTRA_RECIPE_ID) ?: 0
         frag.setRecipe(recipeId.toLong())
+        val img: ImageView = findViewById(R.id.collapsing_image)
+        val drawable = ContextCompat.
+            getDrawable(this, Recipe.recipes[recipeId].getImageResourceId())
+        img.setImageDrawable(drawable)
     }
 }
