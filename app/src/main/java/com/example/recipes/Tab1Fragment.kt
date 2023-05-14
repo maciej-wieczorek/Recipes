@@ -19,8 +19,7 @@ class Tab1Fragment : Fragment() {
         val recipeRecycler: RecyclerView =
             inflater.inflate(R.layout.fragment_tab1, container, false) as RecyclerView
 
-        val recipes = arrayOf(Recipe.recipes[0], Recipe.recipes[1])
-        val adapter = CaptionedImagesAdapter(recipes)
+        val adapter = CaptionedImagesAdapter(Recipe.recipes)
         recipeRecycler.adapter = adapter
 
         val layoutManager = GridLayoutManager(activity, 2)

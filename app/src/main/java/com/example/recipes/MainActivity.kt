@@ -25,10 +25,6 @@ class MainActivity : AppCompatActivity(), RecipeListFragment.Listener {
 
         val tabLayout: TabLayout = findViewById(R.id.tabs)
         tabLayout.setupWithViewPager(pager)
-
-//        val intent = Intent(this, TempActivity::class.java)
-//        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//        startActivity(intent)
     }
 
     override fun itemClicked(id: Long) {
