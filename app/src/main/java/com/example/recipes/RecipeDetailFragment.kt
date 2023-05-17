@@ -46,8 +46,8 @@ class RecipeDetailFragment : Fragment(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         val recipe: Recipe = Recipe.recipes[recipeId.toInt()]
-        val title: TextView = rootView.findViewById<TextView>(R.id.textTitle)
-        title.text = recipe.getName()
+//        val title: TextView = rootView.findViewById<TextView>(R.id.textTitle)
+//        title.text = recipe.getName()
         val description: TextView = rootView.findViewById<TextView>(R.id.textDescription)
         description.text = recipe.getRecipe()
 

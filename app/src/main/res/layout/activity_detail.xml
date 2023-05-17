@@ -48,11 +48,11 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <fragment
-                android:id="@+id/detail_frag"
-                android:name="com.example.recipes.RecipeDetailFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+        <fragment
+            android:id="@+id/detail_frag"
+            android:name="com.example.recipes.RecipeDetailFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </androidx.core.widget.NestedScrollView>
 

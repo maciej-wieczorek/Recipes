@@ -13,4 +13,5 @@
     <string name="cat1_tab">Kategoria 1</string>
     <string name="cat2_tab">Kategoria 2</string>
     <string name="image_title">Obrazek</string>
+    <string name="fab_description">FAB</string>
 </resources>

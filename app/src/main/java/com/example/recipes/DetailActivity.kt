@@ -29,5 +29,6 @@ class DetailActivity : AppCompatActivity() {
         val drawable = ContextCompat.
             getDrawable(this, Recipe.recipes[recipeId].getImageResourceId())
         img.setImageDrawable(drawable)
+        title = Recipe.recipes[recipeId].getName()
     }
 }
