@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 
 class TimerFragment() : Fragment(), View.OnClickListener {
 
@@ -15,6 +17,7 @@ class TimerFragment() : Fragment(), View.OnClickListener {
     private var seconds: Int = duration.toInt()
     private var running: Boolean = false
     private var wasRunning: Boolean = false
+    private var layout: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,7 @@ class TimerFragment() : Fragment(), View.OnClickListener {
     ): View? {
         val layout = inflater.inflate(R.layout.fragment_timer, container, false)
         runTimer(layout)
+        this.layout = layout
 
         val startButton: Button = layout.findViewById(R.id.start_button)
         startButton.setOnClickListener(this)
@@ -39,6 +43,10 @@ class TimerFragment() : Fragment(), View.OnClickListener {
         stopButton.setOnClickListener(this)
         val resetButton: Button = layout.findViewById(R.id.reset_button)
         resetButton.setOnClickListener(this)
+        val setButton: Button = layout.findViewById(R.id.set_button)
+        setButton.setOnClickListener(this)
+        val toggleTimerOption: Button = layout.findViewById(R.id.toggle_timer_option)
+        toggleTimerOption.setOnClickListener(this)
 
         return layout
     }
@@ -81,6 +89,41 @@ class TimerFragment() : Fragment(), View.OnClickListener {
         seconds = duration.toInt()
     }
 
+    private fun onClickSet() {
+        running = false
+
+        val inputS: TextView? = layout?.findViewById(R.id.input_s)
+        val inputM: TextView? = layout?.findViewById(R.id.input_m)
+        val inputH: TextView? = layout?.findViewById(R.id.input_h)
+        var s: Long? = inputS?.text.toString().toLongOrNull()
+        var m: Long? = inputM?.text.toString().toLongOrNull()
+        var h: Long? = inputH?.text.toString().toLongOrNull()
+
+        if (s == null)
+            s = 0
+        if (m == null)
+            m = 0
+        if (h == null)
+            h = 0
+
+        seconds = (s + 60 * m + 3600 * h).toInt()
+    }
+
+    private fun onToggle() {
+        val timerInputLayout: LinearLayout? = layout?.findViewById(R.id.timer_input_layout)
+        val setButton: Button? = layout?.findViewById(R.id.set_button)
+
+        if (timerInputLayout?.isVisible == true)
+            timerInputLayout.isVisible = false
+        else
+            timerInputLayout?.isVisible = true
+
+        if (setButton?.isVisible == true)
+            setButton.isVisible = false
+        else
+            setButton?.isVisible = true
+    }
+
     private fun alarm() {
         // TODO
     }
@@ -114,6 +157,8 @@ class TimerFragment() : Fragment(), View.OnClickListener {
             R.id.start_button -> onClickStart()
             R.id.stop_button -> onClickStop()
             R.id.reset_button -> onClickReset()
+            R.id.set_button -> onClickSet()
+            R.id.toggle_timer_option -> onToggle()
         }
     }
 }

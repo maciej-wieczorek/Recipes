@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
+import com.squareup.picasso.Picasso
 import androidx.recyclerview.widget.RecyclerView
 
-class CaptionedImagesAdapter(private val dataSet: Array<Recipe>) :
+class CaptionedImagesAdapter(private val dataSet: List<Recipe>) :
     RecyclerView.Adapter<CaptionedImagesAdapter.ViewHolder>() {
 
     private var listener: Listener? = null
@@ -45,9 +45,7 @@ class CaptionedImagesAdapter(private val dataSet: Array<Recipe>) :
         }
 
         val imageView = cardView.findViewById<ImageView>(R.id.info_image)
-        val drawable = ContextCompat.getDrawable(cardView.context, dataSet[position].getImageResourceId())
-        imageView.setImageDrawable(drawable)
-        imageView.contentDescription = dataSet[position].getName()
+        Picasso.get().load(dataSet[position].getImageURL()).into(imageView)
         val textView = cardView.findViewById<TextView>(R.id.info_text)
         textView.text = dataSet[position].getName()
     }

@@ -1,17 +1,23 @@
 package com.example.recipes
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import android.Manifest
 
 class MainActivity : AppCompatActivity(), RecipeListFragment.Listener {
+
+    private val INTERNET_PERMISSION_REQUEST_CODE = 123 // Use any unique request code
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,6 +31,8 @@ class MainActivity : AppCompatActivity(), RecipeListFragment.Listener {
 
         val tabLayout: TabLayout = findViewById(R.id.tabs)
         tabLayout.setupWithViewPager(pager)
+
+        checkInternetPermission()
     }
 
     override fun itemClicked(id: Long) {
@@ -59,5 +67,41 @@ class MainActivity : AppCompatActivity(), RecipeListFragment.Listener {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun checkInternetPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.INTERNET
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission not granted, request it
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.INTERNET),
+                INTERNET_PERMISSION_REQUEST_CODE
+            )
+        } else {
+            // Permission already granted
+            Recipe.getRecipes()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == INTERNET_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted
+                Recipe.getRecipes()
+            } else {
+                // Permission denied
+                // Handle the situation when the user denies the permission
+            }
+        }
     }
 }

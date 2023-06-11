@@ -1,28 +1,78 @@
 package com.example.recipes
 
-class Recipe(name: String, recipe: String, time: Long, imageId: Int) {
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.Serializable
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
-    private val recipe = recipe
+@Serializable
+data class ResponseObject(
+    val recipeID: Int,
+    val name: String,
+    val description: String,
+    val ingredients: List<String>,
+    val steps: List<Long>,
+    val image: String
+)
+
+class Recipe(name: String, recipe: String, steps: List<Long>, image: String) {
+
     private val name = name
-    private val time = time
-    private val imageResourceId = imageId
+    private val recipe = recipe
+    private val steps = steps
+    private val image = image
 
     companion object {
-        val recipes = arrayOf<Recipe> (
-            Recipe("BloodyMary", "Składniki: \n 40 ml wódki \n 10 ml soku z cytryny \n 120 ml soku pomidorowego \n sos worchestershire\n sól \n pieprz \n tabasco \n gałązka selera naciowego \n\n Sposób przygotowania: \n Wszystkie składnikiwymieszać w szklance z lodem i ozdobić selerem naciowym.", 100, R.drawable.r1),
-            Recipe("recipe1 title", "recipe1 description \na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na", 50, R.drawable.r2),
-            Recipe("recipe2 title", "recipe2 description", 101, R.drawable.r3),
-            Recipe("recipe3 title", "recipe3 description", 105, R.drawable.r4),
-            Recipe("recipe4 title", "recipe4 description", 50, R.drawable.r2),
-            Recipe("recipe5 title", "recipe5 description", 101, R.drawable.r3),
-            Recipe("recipe6 title", "recipe6 description", 105, R.drawable.r4),
-            Recipe("recipe7 title", "recipe7 description", 50, R.drawable.r2),
-            Recipe("recipe8 title", "recipe8 description", 101, R.drawable.r3),
-            Recipe("recipe9 title", "recipe9 description", 105, R.drawable.r4),
-            Recipe("recipe10 title", "recipe10 description", 50, R.drawable.r2),
-            Recipe("recipe11 title", "recipe11 description", 101, R.drawable.r3),
-            Recipe("recipe12 title", "recipe12 description", 105, R.drawable.r4)
-        )
+
+        val server = "http://192.168.0.100:5049/"
+        val recipesEndPoint = server + "Recipes/"
+        val imagesEndPoint = recipesEndPoint + "img/"
+
+        val recipes = mutableListOf<Recipe>()
+
+        fun getRecipes() {
+            GlobalScope.launch(Dispatchers.IO) {
+                val url = URL(recipesEndPoint)
+
+                with(url.openConnection() as HttpURLConnection) {
+                    requestMethod = "GET"
+
+                    // Optional: Set request headers
+                    setRequestProperty("Content-Type", "application/json")
+                    setRequestProperty("Authorization", "Bearer YOUR_TOKEN")
+
+                    val responseCode = responseCode
+                    println("Response Code: $responseCode")
+
+                    BufferedReader(InputStreamReader(inputStream)).use {
+                        val response = StringBuffer()
+                        var inputLine = it.readLine()
+
+                        while (inputLine != null) {
+                            response.append(inputLine)
+                            inputLine = it.readLine()
+                        }
+
+                        val responseObjectList : List<ResponseObject> = Json.decodeFromString(response.toString())
+                        recipes.clear()
+
+                        for (obj in responseObjectList) {
+                            var description = ""
+                            for (ingredient in obj.ingredients)
+                                description += "- $ingredient\n"
+                            description += '\n' + obj.description
+                            recipes.add(Recipe(obj.name, description, obj.steps, obj.image))
+                        }
+                    }
+                }
+            }
+        }
     }
 
     fun getRecipe(): String {
@@ -33,12 +83,12 @@ class Recipe(name: String, recipe: String, time: Long, imageId: Int) {
         return this.name
     }
 
-    fun getTime() : Long {
-        return this.time
+    fun getSteps() : List<Long> {
+        return this.steps
     }
 
-    fun getImageResourceId() : Int {
-        return this.imageResourceId
+    fun getImageURL() : String {
+        return imagesEndPoint + this.image
     }
 
     override fun toString(): String {

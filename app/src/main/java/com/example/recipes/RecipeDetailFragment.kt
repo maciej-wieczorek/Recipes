@@ -22,7 +22,7 @@ class RecipeDetailFragment : Fragment(), View.OnClickListener {
         }
         else {
             val timer = TimerFragment()
-            timer.setDuration(Recipe.recipes[recipeId.toInt()].getTime())
+            timer.setDuration(Recipe.recipes[recipeId.toInt()].getSteps()[0])
             val ft = childFragmentManager.beginTransaction()
             ft.add(R.id.timer_container, timer)
             ft.addToBackStack(null)
@@ -46,11 +46,8 @@ class RecipeDetailFragment : Fragment(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         val recipe: Recipe = Recipe.recipes[recipeId.toInt()]
-//        val title: TextView = rootView.findViewById<TextView>(R.id.textTitle)
-//        title.text = recipe.getName()
         val description: TextView = rootView.findViewById<TextView>(R.id.textDescription)
         description.text = recipe.getRecipe()
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
