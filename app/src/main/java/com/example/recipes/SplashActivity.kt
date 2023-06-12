@@ -38,9 +38,11 @@ class SplashActivity : AppCompatActivity() {
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 } finally {
-                    val intent = Intent(this@SplashActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    synchronized(this) {
+                        val intent = Intent(this@SplashActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
                 }
             }
         }
@@ -76,7 +78,7 @@ class SplashActivity : AppCompatActivity() {
             )
         } else {
             // Permission already granted
-            Recipe.getRecipes()
+            Recipe.fetchRecipes()
         }
     }
 
@@ -89,7 +91,7 @@ class SplashActivity : AppCompatActivity() {
 
         if (requestCode == INTERNET_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Recipe.getRecipes()
+                Recipe.fetchRecipes()
             } else {
                 // Permission denied
             }

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class Tab1Fragment : Fragment() {
+    private val category = "meat";
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,7 +20,8 @@ class Tab1Fragment : Fragment() {
         val recipeRecycler: RecyclerView =
             inflater.inflate(R.layout.fragment_tab1, container, false) as RecyclerView
 
-        val adapter = CaptionedImagesAdapter(Recipe.recipes)
+        val recipes = Recipe.getRecipes(category)
+        val adapter = CaptionedImagesAdapter(recipes)
         recipeRecycler.adapter = adapter
 
         val layoutManager = GridLayoutManager(activity, 2)
@@ -28,7 +30,7 @@ class Tab1Fragment : Fragment() {
         adapter.setListener(object : CaptionedImagesAdapter.Listener {
             override fun onClick(position: Int) {
                 val intent = Intent(activity, DetailActivity::class.java)
-                intent.putExtra(DetailActivity.EXTRA_RECIPE_ID, position)
+                intent.putExtra(DetailActivity.EXTRA_RECIPE_ID, Recipe.positionToRecipeIndex(category, position))
                 activity?.startActivity(intent)
             }
         })

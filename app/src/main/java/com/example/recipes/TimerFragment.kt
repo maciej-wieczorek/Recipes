@@ -1,7 +1,9 @@
 package com.example.recipes
 
-import android.os.Bundle
-import android.os.Handler
+import android.content.Context
+import android.media.Ringtone
+import android.media.RingtoneManager
+import android.os.*
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.ToggleButton
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 
 class TimerFragment() : Fragment(), View.OnClickListener {
@@ -18,6 +22,9 @@ class TimerFragment() : Fragment(), View.OnClickListener {
     private var running: Boolean = false
     private var wasRunning: Boolean = false
     private var layout: View? = null
+    private lateinit var vibrator: Vibrator
+
+    private lateinit var ringtone: Ringtone
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +34,16 @@ class TimerFragment() : Fragment(), View.OnClickListener {
             running = savedInstanceState.getBoolean("running")
             wasRunning = savedInstanceState.getBoolean("wasRunning")
         }
+
+        val alarmSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        ringtone = RingtoneManager.getRingtone(context, alarmSoundUri)
+        vibrator = getSystemService(requireContext(), Vibrator::class.java)!!
+        onToggle()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ringtone.stop()
     }
 
     override fun onCreateView(
@@ -47,6 +64,8 @@ class TimerFragment() : Fragment(), View.OnClickListener {
         setButton.setOnClickListener(this)
         val toggleTimerOption: Button = layout.findViewById(R.id.toggle_timer_option)
         toggleTimerOption.setOnClickListener(this)
+        val alarmStopButton: Button = layout.findViewById(R.id.alarm_stop_button)
+        alarmStopButton.setOnClickListener(this)
 
         return layout
     }
@@ -110,22 +129,43 @@ class TimerFragment() : Fragment(), View.OnClickListener {
     }
 
     private fun onToggle() {
-        val timerInputLayout: LinearLayout? = layout?.findViewById(R.id.timer_input_layout)
-        val setButton: Button? = layout?.findViewById(R.id.set_button)
+        val toggleButton: ToggleButton? = layout?.findViewById(R.id.toggle_timer_option)
 
-        if (timerInputLayout?.isVisible == true)
-            timerInputLayout.isVisible = false
-        else
-            timerInputLayout?.isVisible = true
+        if (toggleButton != null) {
+            val timerInputLayout: LinearLayout? = layout?.findViewById(R.id.timer_input_layout)
+            val setButton: Button? = layout?.findViewById(R.id.set_button)
 
-        if (setButton?.isVisible == true)
-            setButton.isVisible = false
-        else
-            setButton?.isVisible = true
+            if (toggleButton.isChecked) {
+                timerInputLayout?.isVisible = true
+                setButton?.isVisible = true
+            }
+            else {
+                timerInputLayout?.isVisible = false
+                setButton?.isVisible = false
+            }
+        }
     }
 
-    private fun alarm() {
-        // TODO
+    private fun startRingtone() {
+        ringtone.play()
+    }
+
+    private fun startVibrator() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createWaveform(longArrayOf(0, 1000, 500), -1))
+        } else {
+            vibrator.vibrate(longArrayOf(0, 1000, 500), -1)
+        }
+    }
+
+    private fun startAlarm() {
+        startRingtone()
+        startVibrator()
+    }
+
+    private fun stopAlarm() {
+        ringtone.stop()
+        vibrator.cancel()
     }
 
     private fun runTimer(view: View) {
@@ -139,13 +179,15 @@ class TimerFragment() : Fragment(), View.OnClickListener {
                 val time: String = String.format("%d:%02d:%02d", hours, minutes, secs)
                 timeView.text = time
 
-                if (seconds == 0) {
-                    alarm()
+                if (running && seconds == 0) {
+                    running = false
+                    startAlarm()
                 }
 
                 if (running) {
                     seconds--
                 }
+
                 handler.postDelayed(this, 1000)
             }
         }
@@ -159,6 +201,7 @@ class TimerFragment() : Fragment(), View.OnClickListener {
             R.id.reset_button -> onClickReset()
             R.id.set_button -> onClickSet()
             R.id.toggle_timer_option -> onToggle()
+            R.id.alarm_stop_button -> stopAlarm()
         }
     }
 }

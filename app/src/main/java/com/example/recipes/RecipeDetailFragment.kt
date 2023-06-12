@@ -9,20 +9,19 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 
-
 class RecipeDetailFragment : Fragment(), View.OnClickListener {
 
     private var recipeId: Long = 0
     private lateinit var rootView: View
+    private lateinit var timer: TimerFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        timer = TimerFragment()
         if (savedInstanceState != null) {
             recipeId = savedInstanceState.getLong("recipeId")
         }
         else {
-            val timer = TimerFragment()
-            timer.setDuration(Recipe.recipes[recipeId.toInt()].getSteps()[0])
             val ft = childFragmentManager.beginTransaction()
             ft.add(R.id.timer_container, timer)
             ft.addToBackStack(null)
@@ -47,6 +46,7 @@ class RecipeDetailFragment : Fragment(), View.OnClickListener {
         super.onStart()
         val recipe: Recipe = Recipe.recipes[recipeId.toInt()]
         val description: TextView = rootView.findViewById<TextView>(R.id.textDescription)
+        timer.setDuration(Recipe.recipes[recipeId.toInt()].getSteps()[0])
         description.text = recipe.getRecipe()
     }
 

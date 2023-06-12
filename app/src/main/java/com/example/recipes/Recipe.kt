@@ -3,6 +3,7 @@ package com.example.recipes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.Serializable
@@ -14,6 +15,7 @@ import java.net.URL
 @Serializable
 data class ResponseObject(
     val recipeID: Int,
+    val category: String,
     val name: String,
     val description: String,
     val ingredients: List<String>,
@@ -21,8 +23,9 @@ data class ResponseObject(
     val image: String
 )
 
-class Recipe(name: String, recipe: String, steps: List<Long>, image: String) {
+class Recipe(category: String, name: String, recipe: String, steps: List<Long>, image: String) {
 
+    private val category = category
     private val name = name
     private val recipe = recipe
     private val steps = steps
@@ -30,13 +33,14 @@ class Recipe(name: String, recipe: String, steps: List<Long>, image: String) {
 
     companion object {
 
-        val server = "http://192.168.0.100:5049/"
-        val recipesEndPoint = server + "Recipes/"
-        val imagesEndPoint = recipesEndPoint + "img/"
+        private const val server = "http://192.168.0.100:5049/"
+        private const val recipesEndPoint = server + "Recipes/"
+        private const val imagesEndPoint = recipesEndPoint + "img/"
 
         val recipes = mutableListOf<Recipe>()
+        private val categories: HashMap<String, MutableList<Int>> = HashMap()
 
-        fun getRecipes() {
+        fun fetchRecipes() {
             GlobalScope.launch(Dispatchers.IO) {
                 val url = URL(recipesEndPoint)
 
@@ -61,17 +65,43 @@ class Recipe(name: String, recipe: String, steps: List<Long>, image: String) {
 
                         val responseObjectList : List<ResponseObject> = Json.decodeFromString(response.toString())
                         recipes.clear()
+                        categories.clear()
 
-                        for (obj in responseObjectList) {
+                        for ((index, obj) in responseObjectList.withIndex()) {
                             var description = ""
                             for (ingredient in obj.ingredients)
                                 description += "- $ingredient\n"
                             description += '\n' + obj.description
-                            recipes.add(Recipe(obj.name, description, obj.steps, obj.image))
+                            recipes.add(Recipe(obj.category, obj.name, description, obj.steps, obj.image))
+
+                            val category: MutableList<Int>? = categories[obj.category]
+                            if (category == null) {
+                                categories[obj.category] = mutableListOf(index)
+                            }
+                            else {
+                                category.add(index)
+                            }
                         }
                     }
                 }
             }
+        }
+
+        fun getRecipes(category: String) : List<Recipe> {
+            val categoryRecipes = mutableListOf<Recipe>()
+            val indices: MutableList<Int>? = categories[category]
+            if (indices != null) {
+                for (index in indices) {
+                    categoryRecipes.add(recipes[index])
+                }
+            }
+
+            return categoryRecipes
+        }
+
+        fun positionToRecipeIndex(category: String, position: Int) : Int {
+            val indices: MutableList<Int> = categories[category]!!
+            return indices[position]
         }
     }
 
