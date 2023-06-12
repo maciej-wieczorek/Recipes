@@ -19,11 +19,11 @@ data class ResponseObject(
     val name: String,
     val description: String,
     val ingredients: List<String>,
-    val steps: List<Long>,
+    val steps: List<Int>,
     val image: String
 )
 
-class Recipe(category: String, name: String, recipe: String, steps: List<Long>, image: String) {
+class Recipe(category: String, name: String, recipe: String, steps: List<Int>, image: String) {
 
     private val category = category
     private val name = name
@@ -113,7 +113,7 @@ class Recipe(category: String, name: String, recipe: String, steps: List<Long>, 
         return this.name
     }
 
-    fun getSteps() : List<Long> {
+    fun getSteps() : List<Int> {
         return this.steps
     }
 

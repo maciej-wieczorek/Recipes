@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center">
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,9 +22,9 @@
                 android:id="@+id/toggle_timer_option"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:textOff="Ustaw"
-                android:textOn="Ustaw"
-                android:layout_gravity="right" />
+                android:textOn="Ustaw" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -34,15 +35,15 @@
                     android:id="@+id/toggle_timer_ringtone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textOff="Wibracje"
-                    android:textOn="Wibracje" />
+                    android:textOff="Alarm"
+                    android:textOn="Alarm" />
 
                 <ToggleButton
                     android:id="@+id/toggle_timer_vibration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textOff="Alarm"
-                    android:textOn="Alarm" />
+                    android:textOff="Wibracje"
+                    android:textOn="Wibracje" />
 
             </LinearLayout>
 
@@ -84,69 +85,121 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/timer_input_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/input_h"
+            <LinearLayout
+                android:id="@+id/timer_input_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="2"
-                android:inputType="numberSigned" />
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-            <TextView
-                android:id="@+id/textViewH"
+                <EditText
+                    android:id="@+id/input_h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="2"
+                    android:inputType="numberSigned" />
+
+                <TextView
+                    android:id="@+id/textViewH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="1"
+                    android:text="h" />
+
+                <EditText
+                    android:id="@+id/input_m"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="2"
+                    android:inputType="numberSigned" />
+
+                <TextView
+                    android:id="@+id/textViewM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="1"
+                    android:text="m" />
+
+                <EditText
+                    android:id="@+id/input_s"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="2"
+                    android:inputType="numberSigned" />
+
+                <TextView
+                    android:id="@+id/textViewS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="1"
+                    android:text="s" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/set_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="1"
-                android:text="h" />
-
-            <EditText
-                android:id="@+id/input_m"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="2"
-                android:inputType="numberSigned" />
-
-            <TextView
-                android:id="@+id/textViewM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="1"
-                android:text="m" />
-
-            <EditText
-                android:id="@+id/input_s"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="2"
-                android:inputType="numberSigned" />
-
-            <TextView
-                android:id="@+id/textViewS"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="1"
-                android:text="s" />
-
+                android:layout_gravity="center_horizontal"
+                android:text="@string/set"
+                android:visibility="gone" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/set_button"
+        <LinearLayout
+            android:id="@+id/progress_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/set" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/previous_timer_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="previous timer button"
+                app:srcCompat="@android:drawable/ic_media_previous" />
+
+            <TextView
+                android:id="@+id/progress_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="1/1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <ImageButton
+                android:id="@+id/next_timer_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="next timer button"
+                app:srcCompat="@android:drawable/ic_media_next" />
+        </LinearLayout>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/alarm_stop_button"
+    <LinearLayout
+        android:id="@+id/alarm_stop_button_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop alarm" />
+        android:layout_centerInParent="true"
+        android:background="#AAFF0000"
+        android:elevation="8dp"
+        android:padding="100dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/alarm_stop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop alarm" />
+
+    </LinearLayout>
 
 </RelativeLayout>

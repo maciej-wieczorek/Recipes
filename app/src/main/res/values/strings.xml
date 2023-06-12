@@ -11,8 +11,8 @@
     <string name="action_title">Action_Activity</string>
     <string name="title_top">Recipes</string>
     <string name="home_tab">Start</string>
-    <string name="cat1_tab">Kategoria 1</string>
-    <string name="cat2_tab">Kategoria 2</string>
+    <string name="cat1_tab">Mięsne</string>
+    <string name="cat2_tab">Wegetariańskie</string>
     <string name="image_title">Obrazek</string>
     <string name="fab_description">FAB</string>
     <string name="title_activity_splash">SplashActivity</string>

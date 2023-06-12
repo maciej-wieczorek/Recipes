@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class Tab2Fragment : Fragment() {
-    private val category = "vegan";
+    private val category = "vegetarian";
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

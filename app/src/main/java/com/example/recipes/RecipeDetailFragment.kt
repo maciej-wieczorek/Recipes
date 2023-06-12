@@ -46,7 +46,6 @@ class RecipeDetailFragment : Fragment(), View.OnClickListener {
         super.onStart()
         val recipe: Recipe = Recipe.recipes[recipeId.toInt()]
         val description: TextView = rootView.findViewById<TextView>(R.id.textDescription)
-        timer.setDuration(Recipe.recipes[recipeId.toInt()].getSteps()[0])
         description.text = recipe.getRecipe()
     }
 
@@ -56,6 +55,7 @@ class RecipeDetailFragment : Fragment(), View.OnClickListener {
 
     fun setRecipe(id: Long) {
         recipeId = id
+        timer.setSteps(Recipe.recipes[recipeId.toInt()].getSteps() as ArrayList<Int>)
     }
 
     private fun onClickFAB() {
