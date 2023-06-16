@@ -47,10 +47,6 @@ class Recipe(category: String, name: String, recipe: String, steps: List<Int>, i
                 with(url.openConnection() as HttpURLConnection) {
                     requestMethod = "GET"
 
-                    // Optional: Set request headers
-                    setRequestProperty("Content-Type", "application/json")
-                    setRequestProperty("Authorization", "Bearer YOUR_TOKEN")
-
                     val responseCode = responseCode
                     println("Response Code: $responseCode")
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Recipes</string>
+    <string name="app_name">Przepisy</string>
     <string name="detail_button">Pokaż przepis</string>
     <string name="recipe_name">Nazwa przepisu</string>
     <string name="recipe_recipe">Składniki i sposób przygotowania</string>
@@ -9,14 +9,13 @@
     <string name="set">Ustaw</string>
     <string name="action_activity_title">Info</string>
     <string name="action_title">Action_Activity</string>
-    <string name="title_top">Recipes</string>
+    <string name="title_top">Przepisy</string>
     <string name="home_tab">Start</string>
     <string name="cat1_tab">Mięsne</string>
     <string name="cat2_tab">Wegetariańskie</string>
     <string name="image_title">Obrazek</string>
     <string name="fab_description">FAB</string>
     <string name="title_activity_splash">SplashActivity</string>
-    <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
